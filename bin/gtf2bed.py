@@ -47,8 +47,8 @@ with open(gtfFile, 'r') as f:
             attribute = re.sub("^\s*","",attribute)
             attribute = re.sub(r"\"","",attribute)
             if attribute != "":
-                key, value = attribute.split(' ')
-                attributeDict[key] = value
+                key, value = attribute.split(' "') #modified to address space in value e.g. "1 (assigned to previous version 2)" of key transcript_support_level
+                attributeDict[key] = value.replace('"','') #modified to remove closing double quoute
         if not attributeDict['transcript_id'] in entryDict:
             entryDict[attributeDict['transcript_id']] = list()
         entryDict[attributeDict['transcript_id']].append(line.rstrip())
