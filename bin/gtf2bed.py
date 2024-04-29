@@ -45,7 +45,7 @@ with open(gtfFile, 'r') as f:
         attributes = attributes.split(";")
         for attribute in attributes:
             attribute = re.sub("^\s*","",attribute)
-            attribute = re.sub(r"\"","",attribute)
+            #attribute = re.sub(r"\"","",attribute)
             if attribute != "":
                 key, value = attribute.split(' "') #modified to address space in value e.g. "1 (assigned to previous version 2)" of key transcript_support_level
                 attributeDict[key] = value.replace('"','') #modified to remove closing double quoute
@@ -82,13 +82,13 @@ for annotationSource in sources:
             attributes = attributes.split(";")
             for attribute in attributes:
                 attribute = re.sub("^\s*","",attribute)
-                attribute = re.sub(r"\"","",attribute)
+                #attribute = re.sub(r"\"","",attribute)
                 if attribute != "":
-                    key, value = attribute.split(' ')
-                    attributeDict[key] = value
+                    key, value = attribute.split(' "') #modified to address space in value e.g. "1 (assigned to previous version 2)" of key transcript_support_level
+                    attributeDict[key] = value.replace('"','') #modified to remove closing double quoute
             if curTx != attributeDict['transcript_id'] and curTx != "":
 
-                cdsRank = cds.keys()
+                cdsRank = list(cds.keys())
                 exonRank = list(exon.keys())
 
                 if len(cdsRank) == 0:
@@ -195,8 +195,8 @@ for annotationSource in sources:
                     cds[txIter - 1]['start'] = int(start)
                     cds[txIter - 1]['end'] = int(end)
 
-    cdsRank = cds.keys()
-    exonRank = exon.keys()
+    cdsRank = list(cds.keys())
+    exonRank = list(exon.keys())
 
     if len(cdsRank) == 0:
         if (curStrand == "+") :
